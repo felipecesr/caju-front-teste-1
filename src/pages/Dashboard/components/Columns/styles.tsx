@@ -24,7 +24,7 @@ export const Container = styled.div`
   margin-top: 24px;
 `;
 
-export const Column = styled.div<{ status: any }>`
+export const Column = styled.section<{ status: any }>`
   height: auto;
   background-color: ${({ status }) =>
     registrationStatusStyles[status].background};
