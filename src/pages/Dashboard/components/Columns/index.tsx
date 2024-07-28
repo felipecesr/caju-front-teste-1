@@ -1,3 +1,4 @@
+import { Registration } from "~/types";
 import * as S from "./styles";
 import RegistrationCard from "../RegistrationCard";
 
@@ -6,15 +7,6 @@ const allColumns = [
   { status: "APPROVED", title: "Aprovado" },
   { status: "REPROVED", title: "Reprovado" },
 ];
-
-type Registration = {
-  admissionDate: string;
-  email: string;
-  employeeName: string;
-  status: string;
-  cpf: string;
-  id: string;
-};
 
 type Props = {
   registrations?: Registration[];
