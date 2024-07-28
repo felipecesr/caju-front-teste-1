@@ -6,12 +6,30 @@ import {
   HiOutlineCalendar,
   HiOutlineTrash,
 } from "react-icons/hi";
+import { useRegistrations } from "~/context";
+import { Registration } from "~/types";
+import { ActionTypes } from "~/context/reducer";
+import axios from "axios";
 
 type Props = {
-  data: any;
+  data: Registration;
 };
 
 const RegistrationCard = (props: Props) => {
+  const { dispatch } = useRegistrations();
+
+  function updateRegistration(data: Registration, status: string) {
+    const payload = { ...data, status };
+    return axios
+      .put(`http://localhost:3000/registrations/${data.id}`, payload)
+      .then((response) =>
+        dispatch({
+          type: ActionTypes.UPDATE_REGISTRATION,
+          registration: response.data,
+        })
+      );
+  }
+
   return (
     <S.Card>
       <S.IconAndText>
@@ -27,9 +45,24 @@ const RegistrationCard = (props: Props) => {
         <span>{props.data.admissionDate}</span>
       </S.IconAndText>
       <S.Actions>
-        <ButtonSmall bgcolor="rgb(255, 145, 154)" >Reprovar</ButtonSmall>
-        <ButtonSmall bgcolor="rgb(155, 229, 155)">Aprovar</ButtonSmall>
-        <ButtonSmall bgcolor="#ff8858">Revisar novamente</ButtonSmall>
+        <ButtonSmall
+          onClick={() => updateRegistration(props.data, "REPROVED")}
+          bgcolor="rgb(255, 145, 154)"
+        >
+          Reprovar
+        </ButtonSmall>
+        <ButtonSmall
+          onClick={() => updateRegistration(props.data, "APPROVED")}
+          bgcolor="rgb(155, 229, 155)"
+        >
+          Aprovar
+        </ButtonSmall>
+        <ButtonSmall
+          onClick={() => updateRegistration(props.data, "REVIEW")}
+          bgcolor="#ff8858"
+        >
+          Revisar novamente
+        </ButtonSmall>
 
         <HiOutlineTrash />
       </S.Actions>
