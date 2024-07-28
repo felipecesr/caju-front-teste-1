@@ -1,5 +1,5 @@
-export const Spinner = () => {
-  return (
-    <div role="alert" aria-label="Carregando" />
-  )
-}
+export const Spinner = () => (
+  <div role="alert" aria-label="Carregando">
+    <span>Carregando</span>
+  </div>
+);
