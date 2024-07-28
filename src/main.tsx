@@ -1,10 +1,10 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
+import { createRoot } from "react-dom/client";
+import { RegistrationsProvider } from "./context";
 import App from "./App";
-import './index.css'
+import "./index.css";
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
+createRoot(document.getElementById("root")!).render(
+  <RegistrationsProvider>
     <App />
-  </React.StrictMode>,
+  </RegistrationsProvider>
 );
