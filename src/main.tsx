@@ -1,10 +1,12 @@
 import { createRoot } from "react-dom/client";
-import { RegistrationsProvider } from "./context";
+import { AppProviders } from "./context/app-providers";
 import App from "./App";
 import "./index.css";
 
-createRoot(document.getElementById("root")!).render(
-  <RegistrationsProvider>
+const rootElement = document.getElementById("root")!;
+
+createRoot(rootElement).render(
+  <AppProviders>
     <App />
-  </RegistrationsProvider>
+  </AppProviders>
 );
