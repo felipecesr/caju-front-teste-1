@@ -1,11 +1,12 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { cpfIsValid } from "cpf-is-valid";
 import Collumns from "./components/Columns";
 import { SearchBar } from "./components/Searchbar";
 import { Spinner } from "~/components/Spinner";
 import * as S from "./styles";
-import { useRegistrations } from "~/context";
+import { useRegistrations } from "~/context/registration";
 import { Registration } from "~/types";
-import { ActionTypes } from "~/context/reducer";
+import { ActionTypes } from "~/context/registration/reducer";
 import axios from "axios";
 
 const DashboardPage = () => {
@@ -32,15 +33,20 @@ const DashboardPage = () => {
     fetchRegistrations();
   }, [dispatch, query]);
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.value === "78502270001" || e.target.value === "") {
-      setQuery(e.target.value);
+  const filterByCPF = (cpf: string) => {
+    if (!cpfIsValid(cpf) && query !== "") {
+      setQuery("");
+      return;
+    }
+
+    if (cpfIsValid(cpf)) {
+      setQuery(cpf);
     }
   };
 
   return (
     <S.Container>
-      <SearchBar handleChange={handleChange} />
+      <SearchBar filterByCPF={filterByCPF} />
       {isLoading ? <Spinner /> : <Collumns registrations={registrations} />}
     </S.Container>
   );
