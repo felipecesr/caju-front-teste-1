@@ -1,8 +1,11 @@
-export type Registration = {
-  id: string;
-  admissionDate: string;
-  email: string;
+export type Employee = {
   employeeName: string;
-  status: string;
+  email: string;
   cpf: string;
+  admissionDate: string;
+};
+
+export type Registration = Employee & {
+  id: string;
+  status: string;
 };
