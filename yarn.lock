@@ -934,6 +934,11 @@
   dependencies:
     "@babel/runtime" "^7.12.5"
 
+"@testing-library/user-event@^14.5.2":
+  version "14.5.2"
+  resolved "https://registry.yarnpkg.com/@testing-library/user-event/-/user-event-14.5.2.tgz#db7257d727c891905947bd1c1a99da20e03c2ebd"
+  integrity sha512-YAh82Wh4TIrxYLmfGcixwD18oIjyC1pFQC2Y01F2lzV2HTMiYrI0nze0FD0ocB//CKS/7jIUgae+adPqxK5yCQ==
+
 "@tinyhttp/accepts@2.2.1":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@tinyhttp/accepts/-/accepts-2.2.1.tgz#2ea212c3108ad70aead510595e2c74577953e119"
@@ -1890,6 +1895,11 @@ convert-source-map@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/convert-source-map/-/convert-source-map-2.0.0.tgz#4b560f649fc4e918dd0ab75cf4961e8bc882d82a"
   integrity sha512-Kvp459HrV2FEJ1CAsi1Ku+MY3kasH19TFykTz2xWmMeq6bk2NU3XXvfJ+Q61m0xktWwt+1HSYf3JZsTms3aRJg==
+
+cpf-is-valid@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/cpf-is-valid/-/cpf-is-valid-1.0.2.tgz#c4cb7754011cf4ae06a87afec1251f55bc433b75"
+  integrity sha512-bMWisvn8qTZCaVryDQfdTKW3aubi6t9YgigAdlRD+RqMc6fl4TVJS/Ngu2tQK9/vB1ADlmsZoDHqYhgLzDq0Kg==
 
 create-jest@^29.7.0:
   version "29.7.0"
@@ -4327,10 +4337,22 @@ react-dom@^18.2.0:
     loose-envify "^1.1.0"
     scheduler "^0.23.2"
 
+react-hook-form@^7.52.1:
+  version "7.52.1"
+  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.52.1.tgz#ec2c96437b977f8b89ae2d541a70736c66284852"
+  integrity sha512-uNKIhaoICJ5KQALYZ4TOaOLElyM+xipord+Ha3crEFhTntdLvWZqVY49Wqd/0GiVCA/f9NjemLeiNPjG7Hpurg==
+
 react-icons@^5.2.1:
   version "5.2.1"
   resolved "https://registry.yarnpkg.com/react-icons/-/react-icons-5.2.1.tgz#28c2040917b2a2eda639b0f797bff1888e018e4a"
   integrity sha512-zdbW5GstTzXaVKvGSyTaBalt7HSfuK5ovrzlpyiWHAFXndXTdd/1hdDHI4xBM1Mn7YriT6aqESucFl9kEXzrdw==
+
+react-input-mask-br@^1.1.5, react-input-mask-br@^1.1.8:
+  version "1.1.8"
+  resolved "https://registry.yarnpkg.com/react-input-mask-br/-/react-input-mask-br-1.1.8.tgz#33cfd9ca40d3f655afd3844483d9eebb1f2f9b14"
+  integrity sha512-yzcykHmslOsYU6z3Wb4jr5HqeTQ++pE9oo9xlL3dCvV3nqVUQEFBwmuScNaiS+tGWdud99tfR7Q19k8/K4qfOA==
+  dependencies:
+    react-input-mask-br "^1.1.5"
 
 react-is@^16.13.1, react-is@^16.6.0, react-is@^16.7.0:
   version "16.13.1"
