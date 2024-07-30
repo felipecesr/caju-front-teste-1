@@ -33,7 +33,7 @@ export const Column = styled.section<{ status: any }>`
   max-height: 80vh;
 `;
 
-export const TitleColumn = styled.h3<{ status: any }>`
+export const TitleColumn = styled.h2<{ status: any }>`
   margin: 0px;
   color: ${({ status }) => registrationStatusStyles[status].title};
   margin: 24px;
