@@ -6,9 +6,9 @@ import {
   HiOutlineCalendar,
   HiOutlineTrash,
 } from "react-icons/hi";
-import { useRegistrations } from "~/context";
+import { useRegistrations } from "~/context/registration";
 import { Registration } from "~/types";
-import { ActionTypes } from "~/context/reducer";
+import { ActionTypes } from "~/context/registration/reducer";
 import axios from "axios";
 
 type Props = {
@@ -28,6 +28,12 @@ const RegistrationCard = (props: Props) => {
           registration: response.data,
         })
       );
+  }
+
+  function deleteRegistration(id: string) {
+    return axios
+      .delete(`http://localhost:3000/registrations/${id}`)
+      .then(() => dispatch({ type: ActionTypes.DELETE_REGISTRATION, id }));
   }
 
   return (
@@ -64,7 +70,12 @@ const RegistrationCard = (props: Props) => {
           Revisar novamente
         </ButtonSmall>
 
-        <HiOutlineTrash />
+        <S.ButtonDelete
+          aria-label="Apagar"
+          onClick={() => deleteRegistration(props.data.id)}
+        >
+          <HiOutlineTrash />
+        </S.ButtonDelete>
       </S.Actions>
     </S.Card>
   );
