@@ -41,21 +41,29 @@ test("filters registrations by cpf", async () => {
   ).not.toBeInTheDocument();
 });
 
-test("change registration status to approved", async () => {
+test("change registration status to repproved", async () => {
   const { user } = render(<App />);
 
   await waitForElementToBeRemoved(
     screen.getByRole("alert", { name: /carregando/i })
   );
 
-  const region = screen.getByRole("region", { name: /aprovado/i });
-  await user.click(within(region).getByRole("button", { name: /reprovar/i }));
+  const approvedColumn = screen.getByRole("region", { name: /aprovado/i });
+  const reprovedColumn = screen.getByRole("region", { name: /reprovado/i });
+  const reviewColumn = screen.getByRole("region", {
+    name: /pronto para revisar/i,
+  });
+
+  await user.click(
+    within(approvedColumn).getByRole("button", { name: /revisar novamente/i })
+  );
+  await user.click(
+    within(reviewColumn).getByRole("button", { name: /reprovar/i })
+  );
 
   const registration = screen.getByRole("heading", { name: /luiz filho/i });
-  expect(region).not.toContainElement(registration);
-  expect(screen.getByRole("region", { name: /reprovado/i })).toContainElement(
-    registration
-  );
+  expect(approvedColumn).not.toContainElement(registration);
+  expect(reprovedColumn).toContainElement(registration);
 });
 
 test("deletes a registration", async () => {

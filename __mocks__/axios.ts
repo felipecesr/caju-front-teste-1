@@ -12,7 +12,7 @@ const registrations = [
     admissionDate: "22/10/2023",
     email: "filipe@caju.com.br",
     employeeName: "Filipe Marins",
-    status: "REVIEW",
+    status: "REPROVED",
     cpf: "78502270001",
   },
 ];

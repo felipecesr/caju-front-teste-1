@@ -1,3 +1,4 @@
+import { useId } from "react";
 import { ButtonSmall } from "~/components/Buttons";
 import * as S from "./styles";
 import {
@@ -16,6 +17,7 @@ type Props = {
 };
 
 const RegistrationCard = (props: Props) => {
+  const cardId = useId();
   const { dispatch } = useRegistrations();
 
   function updateRegistration(data: Registration, status: string) {
@@ -37,10 +39,10 @@ const RegistrationCard = (props: Props) => {
   }
 
   return (
-    <S.Card>
+    <S.Card aria-labelledby={cardId}>
       <S.IconAndText>
         <HiOutlineUser />
-        <h3>{props.data.employeeName}</h3>
+        <h3 id={cardId}>{props.data.employeeName}</h3>
       </S.IconAndText>
       <S.IconAndText>
         <HiOutlineMail />
@@ -51,24 +53,30 @@ const RegistrationCard = (props: Props) => {
         <span>{props.data.admissionDate}</span>
       </S.IconAndText>
       <S.Actions>
-        <ButtonSmall
-          onClick={() => updateRegistration(props.data, "REPROVED")}
-          bgcolor="rgb(255, 145, 154)"
-        >
-          Reprovar
-        </ButtonSmall>
-        <ButtonSmall
-          onClick={() => updateRegistration(props.data, "APPROVED")}
-          bgcolor="rgb(155, 229, 155)"
-        >
-          Aprovar
-        </ButtonSmall>
-        <ButtonSmall
-          onClick={() => updateRegistration(props.data, "REVIEW")}
-          bgcolor="#ff8858"
-        >
-          Revisar novamente
-        </ButtonSmall>
+        {props.data.status === "REVIEW" && (
+          <>
+            <ButtonSmall
+              onClick={() => updateRegistration(props.data, "REPROVED")}
+              bgcolor="rgb(255, 145, 154)"
+            >
+              Reprovar
+            </ButtonSmall>
+            <ButtonSmall
+              onClick={() => updateRegistration(props.data, "APPROVED")}
+              bgcolor="rgb(155, 229, 155)"
+            >
+              Aprovar
+            </ButtonSmall>
+          </>
+        )}
+        {props.data.status !== "REVIEW" && (
+          <ButtonSmall
+            onClick={() => updateRegistration(props.data, "REVIEW")}
+            bgcolor="#ff8858"
+          >
+            Revisar novamente
+          </ButtonSmall>
+        )}
 
         <S.ButtonDelete
           aria-label="Apagar"
