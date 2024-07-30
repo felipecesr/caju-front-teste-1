@@ -40,7 +40,7 @@ const DashboardPage = () => {
     }
 
     if (cpfIsValid(cpf)) {
-      setQuery(cpf);
+      setQuery(cpf.replace(/[.-]/g, ''));
     }
   };
 
