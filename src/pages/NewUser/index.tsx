@@ -10,15 +10,14 @@ import {
 } from "react-hook-form";
 import { setMask } from "react-input-mask-br";
 import { cpfIsValid } from "cpf-is-valid";
-import axios from "axios";
 import TextField from "~/components/TextField";
 import * as S from "./styles";
 import Button from "~/components/Buttons";
 import { IconButton } from "~/components/Buttons/IconButton";
 import routes from "~/router/routes";
-import { useRegistrations } from "~/context/registration";
-import { ActionTypes } from "~/context/registration/reducer";
+import { useRegistrations } from "~/store/registration";
 import { Employee } from "~/types";
+import { createEmployee } from "~/store/actionCreators";
 
 const NewUserPage = () => {
   const history = useHistory();
@@ -49,15 +48,7 @@ const NewUserPage = () => {
       status: "REVIEW",
     };
 
-    axios
-      .post("http://localhost:3000/registrations", payload)
-      .then((response) => {
-        dispatch({
-          type: ActionTypes.ADD_REGISTRATION,
-          registration: response.data,
-        });
-        goToHome();
-      });
+    createEmployee(dispatch, payload).then(() => goToHome());
   };
 
   const buildErrorProp = (

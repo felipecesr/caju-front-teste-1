@@ -1,5 +1,5 @@
 import { createRoot } from "react-dom/client";
-import { AppProviders } from "./context/app-providers";
+import { AppProviders } from "./store/app-providers";
 import App from "./App";
 import "./index.css";
 

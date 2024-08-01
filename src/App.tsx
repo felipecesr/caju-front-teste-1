@@ -1,8 +1,8 @@
 import { Dialog } from "@reach/dialog";
 import Router from "~/router";
 import { Header } from "./components/Header";
-import { useRegistrations } from "./context/registration";
-import { ActionTypes } from "./context/registration/reducer";
+import { useRegistrations } from "./store/registration";
+import { ActionTypes } from "./store/registration/reducer";
 
 function App() {
   const { state, dispatch } = useRegistrations();

@@ -8,14 +8,14 @@ import {
   HiOutlineCalendar,
   HiOutlineTrash,
 } from "react-icons/hi";
-import { useRegistrations } from "~/context/registration";
-import { Registration } from "~/types";
-import { ActionTypes } from "~/context/registration/reducer";
-import axios from "axios";
+import { useRegistrations } from "~/store/registration";
+import { ActionTypes } from "~/store/registration/reducer";
 import { createPortal } from "react-dom";
+import { Employee } from "~/types";
+import { updateEmployee, deleteEmployee } from "~/store/actionCreators";
 
 type Props = {
-  data: Registration;
+  data: Employee;
 };
 
 const RegistrationCard = (props: Props) => {
@@ -30,35 +30,12 @@ const RegistrationCard = (props: Props) => {
 
   const confirm = (status: string) => {
     const payload = { ...props.data, status };
-    fetchData(
-      dispatch,
-      axios.put(`http://localhost:3000/registrations/${payload.id}`, payload)
-    ).then(() => setNextStatus(""));
-  };
-
-  const fetchData = async (dispatch, promise) => {
-    dispatch({ type: ActionTypes.SET_STATUS, status: "loading" });
-    try {
-      const response = await promise;
-      dispatch({
-        type: ActionTypes.UPDATE_REGISTRATION,
-        registration: response.data,
-      });
-      dispatch({ type: ActionTypes.SET_STATUS, status: "success" });
-    } catch (error) {
-      // dispatch(fetchDataFailure(error));
-    }
+    updateEmployee(dispatch, payload).then(() => setNextStatus(""));
   };
 
   function updateRegistration(status: string) {
     setNextStatus(status);
     dispatch({ type: ActionTypes.SET_STATUS, status: "confiming" });
-  }
-
-  function deleteRegistration(id: string) {
-    return axios
-      .delete(`http://localhost:3000/registrations/${id}`)
-      .then(() => dispatch({ type: ActionTypes.DELETE_REGISTRATION, id }));
   }
 
   return (
@@ -103,7 +80,7 @@ const RegistrationCard = (props: Props) => {
 
         <S.ButtonDelete
           aria-label="Apagar"
-          onClick={() => deleteRegistration(props.data.id)}
+          onClick={() => deleteEmployee(dispatch, props.data.id)}
         >
           <HiOutlineTrash />
         </S.ButtonDelete>

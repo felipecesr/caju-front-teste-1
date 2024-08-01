@@ -20,14 +20,18 @@ const registrations = [
 const db = [...registrations];
 
 export default {
-  get: jest.fn(async (_: any, data: any) => {
-    if (data?.params?.cpf) return { data: [db[0]] };
-    return { data: db };
-  }),
-  put: jest.fn(async (_: any, data: any) => ({ data })),
-  delete: jest.fn(async () => ({})),
-  post: jest.fn(async (_: any, data: any) => {
-    db.push(data);
-    return { data };
-  }),
+  create() {
+    return {
+      get: jest.fn(async (_: any, data: any) => {
+        if (data?.params?.cpf) return { data: [db[0]] };
+        return { data: db };
+      }),
+      put: jest.fn(async (_: any, data: any) => ({ data })),
+      delete: jest.fn(async () => ({})),
+      post: jest.fn(async (_: any, data: any) => {
+        db.push(data);
+        return { data };
+      }),
+    };
+  },
 };
