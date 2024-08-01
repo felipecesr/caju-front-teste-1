@@ -42,7 +42,12 @@ const NewUserPage = () => {
   };
 
   const onSubmit = (data: Employee) => {
-    const payload = { ...data, id: getRandomInteger(0, 100), status: "REVIEW" };
+    const payload = {
+      ...data,
+      cpf: data.cpf.replace(/[.-]/g, ""),
+      id: getRandomInteger(0, 100),
+      status: "REVIEW",
+    };
 
     axios
       .post("http://localhost:3000/registrations", payload)
