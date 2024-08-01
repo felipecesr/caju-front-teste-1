@@ -2,13 +2,12 @@ import { Dialog } from "@reach/dialog";
 import Router from "~/router";
 import { Header } from "./components/Header";
 import { useRegistrations } from "./store/registration";
-import { ActionTypes } from "./store/registration/reducer";
+import { ActionType } from "./store/actionTypes";
 
 function App() {
   const { state, dispatch } = useRegistrations();
 
-  const close = () =>
-    dispatch({ type: ActionTypes.SET_STATUS, status: "idle" });
+  const close = () => dispatch({ type: ActionType.SET_STATUS, status: "idle" });
 
   return (
     <>

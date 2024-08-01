@@ -9,7 +9,7 @@ import {
   HiOutlineTrash,
 } from "react-icons/hi";
 import { useRegistrations } from "~/store/registration";
-import { ActionTypes } from "~/store/registration/reducer";
+import { ActionType } from "~/store/actionTypes";
 import { createPortal } from "react-dom";
 import { Employee } from "~/types";
 import { updateEmployee, deleteEmployee } from "~/store/actionCreators";
@@ -25,7 +25,7 @@ const RegistrationCard = (props: Props) => {
 
   const close = () => {
     setNextStatus("");
-    dispatch({ type: ActionTypes.SET_STATUS, status: "idle" });
+    dispatch({ type: ActionType.SET_STATUS, status: "idle" });
   };
 
   const confirm = (status: string) => {
@@ -35,7 +35,7 @@ const RegistrationCard = (props: Props) => {
 
   function updateRegistration(status: string) {
     setNextStatus(status);
-    dispatch({ type: ActionTypes.SET_STATUS, status: "confiming" });
+    dispatch({ type: ActionType.SET_STATUS, status: "confiming" });
   }
 
   return (

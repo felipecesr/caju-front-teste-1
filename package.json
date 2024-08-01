@@ -12,6 +12,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@reach/dialog": "^0.18.0",
     "axios": "^1.7.2",
     "cpf-is-valid": "^1.0.2",
     "json-server": "^1.0.0-beta.1",

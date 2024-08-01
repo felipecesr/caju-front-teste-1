@@ -1,5 +1,11 @@
 import { createContext, Dispatch, useContext, useReducer } from "react";
-import { initialState, InitialStateType, reducer, Action } from "./reducer";
+import { reducer } from "./reducer";
+import { InitialStateType, Action } from "../actionTypes";
+
+const initialState: InitialStateType = {
+  status: "idle",
+  employees: [],
+};
 
 const RegistrationContext = createContext<{
   state: InitialStateType;
