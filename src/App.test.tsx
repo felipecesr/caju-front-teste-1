@@ -41,7 +41,7 @@ test("filters registrations by cpf", async () => {
   ).not.toBeInTheDocument();
 });
 
-test("change registration status to repproved", async () => {
+test("changes registration status to repproved", async () => {
   const { user } = render(<App />);
 
   await waitForElementToBeRemoved(
@@ -49,21 +49,31 @@ test("change registration status to repproved", async () => {
   );
 
   const approvedColumn = screen.getByRole("region", { name: /aprovado/i });
-  const reprovedColumn = screen.getByRole("region", { name: /reprovado/i });
-  const reviewColumn = screen.getByRole("region", {
-    name: /pronto para revisar/i,
-  });
-
   await user.click(
     within(approvedColumn).getByRole("button", { name: /revisar novamente/i })
   );
+
+  await user.click(screen.getByRole("button", { name: /confirmar/i }));
+
+  screen.getByText(/sucesso/i);
+  await user.click(screen.getByRole("button", { name: /fechar/i }));
+
+  const reviewColumn = screen.getByRole("region", {
+    name: /pronto para revisar/i,
+  });
   await user.click(
     within(reviewColumn).getByRole("button", { name: /reprovar/i })
   );
 
-  const registration = screen.getByRole("heading", { name: /luiz filho/i });
-  expect(approvedColumn).not.toContainElement(registration);
-  expect(reprovedColumn).toContainElement(registration);
+  await user.click(screen.getByRole("button", { name: /confirmar/i }));
+
+  screen.getByText(/sucesso/i);
+  await user.click(screen.getByRole("button", { name: /fechar/i }));
+
+  const employee = screen.getByRole("article", { name: /luiz filho/i });
+  const reprovedColumn = screen.getByRole("region", { name: /reprovado/i });
+
+  expect(reprovedColumn).toContainElement(employee);
 });
 
 test("deletes a registration", async () => {

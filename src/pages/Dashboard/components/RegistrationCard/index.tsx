@@ -1,4 +1,5 @@
-import { useId } from "react";
+import { useId, useState } from "react";
+import { Dialog } from "@reach/dialog";
 import { ButtonSmall } from "~/components/Buttons";
 import * as S from "./styles";
 import {
@@ -11,6 +12,7 @@ import { useRegistrations } from "~/context/registration";
 import { Registration } from "~/types";
 import { ActionTypes } from "~/context/registration/reducer";
 import axios from "axios";
+import { createPortal } from "react-dom";
 
 type Props = {
   data: Registration;
@@ -19,17 +21,38 @@ type Props = {
 const RegistrationCard = (props: Props) => {
   const cardId = useId();
   const { dispatch } = useRegistrations();
+  const [nextStatus, setNextStatus] = useState<string>("");
 
-  function updateRegistration(data: Registration, status: string) {
-    const payload = { ...data, status };
-    return axios
-      .put(`http://localhost:3000/registrations/${data.id}`, payload)
-      .then((response) =>
-        dispatch({
-          type: ActionTypes.UPDATE_REGISTRATION,
-          registration: response.data,
-        })
-      );
+  const close = () => {
+    setNextStatus("");
+    dispatch({ type: ActionTypes.SET_STATUS, status: "idle" });
+  };
+
+  const confirm = (status: string) => {
+    const payload = { ...props.data, status };
+    fetchData(
+      dispatch,
+      axios.put(`http://localhost:3000/registrations/${payload.id}`, payload)
+    ).then(() => setNextStatus(""));
+  };
+
+  const fetchData = async (dispatch, promise) => {
+    dispatch({ type: ActionTypes.SET_STATUS, status: "loading" });
+    try {
+      const response = await promise;
+      dispatch({
+        type: ActionTypes.UPDATE_REGISTRATION,
+        registration: response.data,
+      });
+      dispatch({ type: ActionTypes.SET_STATUS, status: "success" });
+    } catch (error) {
+      // dispatch(fetchDataFailure(error));
+    }
+  };
+
+  function updateRegistration(status: string) {
+    setNextStatus(status);
+    dispatch({ type: ActionTypes.SET_STATUS, status: "confiming" });
   }
 
   function deleteRegistration(id: string) {
@@ -56,13 +79,13 @@ const RegistrationCard = (props: Props) => {
         {props.data.status === "REVIEW" && (
           <>
             <ButtonSmall
-              onClick={() => updateRegistration(props.data, "REPROVED")}
+              onClick={() => updateRegistration("REPROVED")}
               bgcolor="rgb(255, 145, 154)"
             >
               Reprovar
             </ButtonSmall>
             <ButtonSmall
-              onClick={() => updateRegistration(props.data, "APPROVED")}
+              onClick={() => updateRegistration("APPROVED")}
               bgcolor="rgb(155, 229, 155)"
             >
               Aprovar
@@ -71,7 +94,7 @@ const RegistrationCard = (props: Props) => {
         )}
         {props.data.status !== "REVIEW" && (
           <ButtonSmall
-            onClick={() => updateRegistration(props.data, "REVIEW")}
+            onClick={() => updateRegistration("REVIEW")}
             bgcolor="#ff8858"
           >
             Revisar novamente
@@ -85,6 +108,19 @@ const RegistrationCard = (props: Props) => {
           <HiOutlineTrash />
         </S.ButtonDelete>
       </S.Actions>
+      {nextStatus &&
+        createPortal(
+          <Dialog>
+            <button type="button" onClick={close}>
+              Cancelar
+            </button>
+            {nextStatus}
+            <button type="button" onClick={() => confirm(nextStatus)}>
+              Confirmar
+            </button>
+          </Dialog>,
+          document.body
+        )}
     </S.Card>
   );
 };

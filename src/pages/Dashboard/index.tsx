@@ -10,27 +10,28 @@ import { ActionTypes } from "~/context/registration/reducer";
 import axios from "axios";
 
 const DashboardPage = () => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [query, setQuery] = useState<string>("");
-  const { state: registrations, dispatch } = useRegistrations();
+  const { state, dispatch } = useRegistrations();
+
+  function fetchData() {
+    dispatch({ type: ActionTypes.SET_STATUS, status: "loading" });
+    axios
+      .get<Registration[]>("http://localhost:3000/registrations", {
+        params: { cpf: query },
+      })
+      .then((response) => {
+        dispatch({
+          type: ActionTypes.SET_REGISTRATIONS,
+          registrations: response.data,
+        });
+      })
+      .finally(() =>
+        dispatch({ type: ActionTypes.SET_STATUS, status: "idle" })
+      );
+  }
 
   useEffect(() => {
-    function fetchRegistrations() {
-      setIsLoading(true);
-      axios
-        .get<Registration[]>("http://localhost:3000/registrations", {
-          params: { cpf: query },
-        })
-        .then((response) => {
-          dispatch({
-            type: ActionTypes.SET_REGISTRATIONS,
-            registrations: response.data,
-          });
-        })
-        .finally(() => setIsLoading(false));
-    }
-
-    fetchRegistrations();
+    fetchData();
   }, [dispatch, query]);
 
   const filterByCPF = (cpf: string) => {
@@ -40,14 +41,19 @@ const DashboardPage = () => {
     }
 
     if (cpfIsValid(cpf)) {
-      setQuery(cpf.replace(/[.-]/g, ''));
+      setQuery(cpf.replace(/[.-]/g, ""));
     }
   };
 
   return (
     <S.Container>
+      {state.status}
       <SearchBar filterByCPF={filterByCPF} />
-      {isLoading ? <Spinner /> : <Collumns registrations={registrations} />}
+      {state.status === "loading" ? (
+        <Spinner />
+      ) : (
+        <Collumns registrations={state.employees} />
+      )}
     </S.Container>
   );
 };
