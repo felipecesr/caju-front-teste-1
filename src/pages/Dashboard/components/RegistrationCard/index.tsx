@@ -12,7 +12,7 @@ import { useRegistrations } from "~/store/registration";
 import { ActionType } from "~/store/actionTypes";
 import { createPortal } from "react-dom";
 import { Employee } from "~/types";
-import { updateEmployee, deleteEmployee } from "~/store/actionCreators";
+import { updateEmployee } from "~/store/actionCreators";
 
 type Props = {
   data: Employee;
@@ -21,20 +21,19 @@ type Props = {
 const RegistrationCard = (props: Props) => {
   const cardId = useId();
   const { dispatch } = useRegistrations();
-  const [nextStatus, setNextStatus] = useState<string>("");
+  const [nextAction, setNextAction] = useState<string>("");
 
   const close = () => {
-    setNextStatus("");
+    setNextAction("");
     dispatch({ type: ActionType.SET_STATUS, status: "idle" });
   };
 
   const confirm = (status: string) => {
-    const payload = { ...props.data, status };
-    updateEmployee(dispatch, payload).then(() => setNextStatus(""));
+    updateEmployee(dispatch, props.data, status).then(() => setNextAction(""));
   };
 
-  function updateRegistration(status: string) {
-    setNextStatus(status);
+  function update(status: string) {
+    setNextAction(status);
     dispatch({ type: ActionType.SET_STATUS, status: "confiming" });
   }
 
@@ -56,13 +55,13 @@ const RegistrationCard = (props: Props) => {
         {props.data.status === "REVIEW" && (
           <>
             <ButtonSmall
-              onClick={() => updateRegistration("REPROVED")}
+              onClick={() => update("repprove")}
               bgcolor="rgb(255, 145, 154)"
             >
               Reprovar
             </ButtonSmall>
             <ButtonSmall
-              onClick={() => updateRegistration("APPROVED")}
+              onClick={() => update("approve")}
               bgcolor="rgb(155, 229, 155)"
             >
               Aprovar
@@ -70,29 +69,23 @@ const RegistrationCard = (props: Props) => {
           </>
         )}
         {props.data.status !== "REVIEW" && (
-          <ButtonSmall
-            onClick={() => updateRegistration("REVIEW")}
-            bgcolor="#ff8858"
-          >
+          <ButtonSmall onClick={() => update("review")} bgcolor="#ff8858">
             Revisar novamente
           </ButtonSmall>
         )}
 
-        <S.ButtonDelete
-          aria-label="Apagar"
-          onClick={() => deleteEmployee(dispatch, props.data.id)}
-        >
+        <S.ButtonDelete aria-label="Apagar" onClick={() => update("delete")}>
           <HiOutlineTrash />
         </S.ButtonDelete>
       </S.Actions>
-      {nextStatus &&
+      {nextAction &&
         createPortal(
           <Dialog>
             <button type="button" onClick={close}>
               Cancelar
             </button>
-            {nextStatus}
-            <button type="button" onClick={() => confirm(nextStatus)}>
+            {nextAction}
+            <button type="button" onClick={() => confirm(nextAction)}>
               Confirmar
             </button>
           </Dialog>,

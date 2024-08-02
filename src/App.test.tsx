@@ -87,6 +87,10 @@ test("deletes a registration", async () => {
   within(region).getByRole("heading", { name: /luiz filho/i });
 
   await user.click(within(region).getByRole("button", { name: /apagar/i }));
+
+  await user.click(screen.getByRole("button", { name: /confirmar/i }));
+  await user.click(screen.getByRole("button", { name: /fechar/i }));
+
   expect(
     within(region).queryByRole("heading", { name: /luiz filho/i })
   ).not.toBeInTheDocument();

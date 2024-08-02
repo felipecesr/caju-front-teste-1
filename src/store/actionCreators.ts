@@ -25,16 +25,31 @@ export const createEmployee = (dispatch: Dispatch<Action>, data: Employee) => {
   });
 };
 
-export const updateEmployee = (dispatch: Dispatch<Action>, data: Employee) => {
+export const updateEmployee = (
+  dispatch: Dispatch<Action>,
+  data: Employee,
+  action: string
+) => {
   dispatch({ type: ActionType.SET_STATUS, status: "loading" });
-  return api.updateEmployee(data).then((res) => {
-    dispatch({ type: ActionType.UPDATE_REGISTRATION, registration: res });
+
+  if (action === "delete") {
+    return api.deleteEmployee(data.id).then(() => {
+      dispatch({ type: ActionType.DELETE_REGISTRATION, id: data.id });
+      dispatch({ type: ActionType.SET_STATUS, status: "success" });
+    });
+  }
+
+  const mapping = {
+    approve: "APPROVED",
+    repprove: "REPROVED",
+    review: "REVIEW",
+  };
+  const payload = { ...data, status: mapping[action] };
+  return api.updateEmployee(payload).then((res) => {
+    dispatch({
+      type: ActionType.UPDATE_REGISTRATION,
+      registration: res,
+    });
     dispatch({ type: ActionType.SET_STATUS, status: "success" });
   });
-};
-
-export const deleteEmployee = (dispatch: Dispatch<Action>, id: string) => {
-  return api
-    .deleteEmployee(id)
-    .then(() => dispatch({ type: ActionType.DELETE_REGISTRATION, id }));
 };

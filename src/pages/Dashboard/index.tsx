@@ -28,7 +28,6 @@ const DashboardPage = () => {
 
   return (
     <S.Container>
-      {state.status}
       <SearchBar filterByCPF={filterByCPF} />
       {state.status === "loading" ? (
         <Spinner />
