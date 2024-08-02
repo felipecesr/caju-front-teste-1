@@ -39,11 +39,12 @@ export const updateEmployee = (
     });
   }
 
-  const mapping = {
+  const mapping: { [key: string]: string } = {
     approve: "APPROVED",
     repprove: "REPROVED",
     review: "REVIEW",
   };
+
   const payload = { ...data, status: mapping[action] };
   return api.updateEmployee(payload).then((res) => {
     dispatch({
