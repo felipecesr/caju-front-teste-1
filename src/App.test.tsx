@@ -122,6 +122,7 @@ test("add new register", async () => {
   await user.type(screen.getByLabelText(/data de admissão/i), "2023-10-22");
 
   await user.click(screen.getByRole("button", { name: /cadastrar/i }));
+  await user.click(screen.getByRole("button", { name: /confirmar/i }));
 
   const column = await screen.findByRole("region", {
     name: /pronto para revisar/i,
