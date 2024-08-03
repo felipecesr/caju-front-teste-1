@@ -10,8 +10,7 @@ import {
 import { useRegistrations } from "~/store/registration";
 import { Employee } from "~/types";
 import { updateEmployee } from "~/store/actionCreators";
-import { useConfirmationDialog } from "~/hooks/useConfirmationDialog";
-import { Dialog } from "~/components/Dialog";
+import { useConfirmation } from "~/store/confirmation";
 
 type Props = {
   data: Employee;
@@ -20,10 +19,11 @@ type Props = {
 const RegistrationCard = (props: Props) => {
   const cardId = useId();
   const { dispatch } = useRegistrations();
-  const { isOpen, openDialog, closeDialog, confirm } = useConfirmationDialog();
+  const { openDialog } = useConfirmation();
 
-  const handleClick = (status: string) => () =>
+  const handleClick = (status: string) => () => {
     openDialog(() => updateEmployee(dispatch, props.data, status));
+  };
 
   return (
     <S.Card aria-labelledby={cardId}>
@@ -66,12 +66,6 @@ const RegistrationCard = (props: Props) => {
           <HiOutlineTrash />
         </S.ButtonDelete>
       </S.Actions>
-      <Dialog
-        isOpen={isOpen}
-        onClose={closeDialog}
-        onConfirm={confirm}
-        message="Certeza?"
-      />
     </S.Card>
   );
 };
