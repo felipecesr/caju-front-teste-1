@@ -111,6 +111,29 @@ test("deletes a registration", async () => {
   ).not.toBeInTheDocument();
 });
 
+test("fails to delete a registration", async () => {
+  jest.spyOn(api, "deleteEmployee").mockRejectedValue("error");
+  const { user } = render(<App />);
+
+  await waitForElementToBeRemoved(
+    screen.getByRole("alert", { name: /carregando/i })
+  );
+
+  const region = screen.getByRole("region", { name: /aprovado/i });
+  within(region).getByRole("heading", { name: /luiz filho/i });
+
+  await user.click(within(region).getByRole("button", { name: /apagar/i }));
+
+  await user.click(screen.getByRole("button", { name: /confirmar/i }));
+  screen.getByText(/erro/i);
+  await user.click(screen.getByRole("button", { name: /fechar/i }));
+  screen.debug();
+
+  expect(
+    screen.getByRole("heading", { name: /luiz filho/i })
+  ).toBeInTheDocument();
+});
+
 test("add new register", async () => {
   const { user } = render(<App />);
 

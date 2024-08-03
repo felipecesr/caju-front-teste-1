@@ -17,8 +17,11 @@ function App() {
       </Header>
       <Router />
       <Dialog />
-      <ReachDialog isOpen={state.status === "success"}>
-        Sucesso!!!
+      <ReachDialog
+        isOpen={state.status === "success" || state.status === "failure"}
+      >
+        {state.status === "success" && <p>Sucesso</p>}
+        {state.status === "failure" && <p>Erro</p>}
         <button type="button" onClick={close}>
           Fechar
         </button>

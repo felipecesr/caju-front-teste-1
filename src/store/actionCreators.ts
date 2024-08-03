@@ -33,10 +33,15 @@ export const updateEmployee = (
   dispatch({ type: ActionType.SET_STATUS, status: "loading" });
 
   if (action === "delete") {
-    return api.deleteEmployee(data.id).then(() => {
-      dispatch({ type: ActionType.DELETE_REGISTRATION, id: data.id });
-      dispatch({ type: ActionType.SET_STATUS, status: "success" });
-    });
+    return api
+      .deleteEmployee(data.id)
+      .then(() => {
+        dispatch({ type: ActionType.DELETE_REGISTRATION, id: data.id });
+        dispatch({ type: ActionType.SET_STATUS, status: "success" });
+      })
+      .catch(() => {
+        dispatch({ type: ActionType.SET_STATUS, status: "failure" });
+      });
   }
 
   const mapping: { [key: string]: string } = {
