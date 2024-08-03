@@ -18,9 +18,11 @@ import routes from "~/router/routes";
 import { useRegistrations } from "~/store/registration";
 import { Employee } from "~/types";
 import { createEmployee } from "~/store/actionCreators";
+import { useConfirmation } from "~/store/confirmation";
 
 const NewUserPage = () => {
   const history = useHistory();
+  const { openDialog } = useConfirmation();
   const { dispatch } = useRegistrations();
   const {
     register,
@@ -48,7 +50,7 @@ const NewUserPage = () => {
       status: "REVIEW",
     };
 
-    createEmployee(dispatch, payload).then(() => goToHome());
+    openDialog(() => createEmployee(dispatch, payload).then(() => goToHome()));
   };
 
   const buildErrorProp = (
