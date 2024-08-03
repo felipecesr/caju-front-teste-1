@@ -4,14 +4,14 @@ type Props = {
   children: React.ReactNode;
 };
 
-type Confirmation = {
+type ContextType = {
   isOpen: boolean;
   openDialog: (cb: Function) => void;
   closeDialog: () => void;
   confirm: () => void;
 };
 
-const ConfirmationContext = createContext<Confirmation | null>(null);
+const ConfirmationContext = createContext<ContextType | null>(null);
 
 export function ConfirmationProvider({ children }: Props) {
   const [isOpen, setIsOpen] = useState(false);
