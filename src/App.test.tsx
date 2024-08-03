@@ -5,6 +5,7 @@ import {
 } from "@testing-library/react";
 import App from "./App";
 import { render } from "./utils/test-utils";
+import * as api from "~/services/employees";
 
 beforeEach(() => {
   jest.clearAllMocks();
@@ -39,6 +40,19 @@ test("filters registrations by cpf", async () => {
   expect(
     screen.queryByRole("heading", { name: /filipe marins/i })
   ).not.toBeInTheDocument();
+});
+
+test("refatch data", async () => {
+  jest.spyOn(api, "getEmployees");
+  const { user } = render(<App />);
+
+  await waitForElementToBeRemoved(
+    screen.getByRole("alert", { name: /carregando/i })
+  );
+
+  await user.click(screen.getByRole("button", { name: /recarregar/i }));
+
+  expect(api.getEmployees).toHaveBeenCalledTimes(2);
 });
 
 test("changes registration status to repproved", async () => {
