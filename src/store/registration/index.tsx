@@ -2,19 +2,21 @@ import { createContext, Dispatch, useContext, useReducer } from "react";
 import { reducer } from "./reducer";
 import { InitialStateType, Action } from "../actionTypes";
 
+type ContextType = {
+  state: InitialStateType;
+  dispatch: Dispatch<Action>;
+};
+
+type Props = {
+  children: React.ReactNode;
+};
+
 const initialState: InitialStateType = {
   status: "idle",
   employees: [],
 };
 
-const RegistrationContext = createContext<{
-  state: InitialStateType;
-  dispatch: Dispatch<Action>;
-}>({ state: initialState, dispatch: () => null });
-
-type Props = {
-  children: React.ReactNode;
-};
+const RegistrationContext = createContext<ContextType | null>(null);
 
 export function RegistrationsProvider({ children }: Props) {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -27,5 +29,11 @@ export function RegistrationsProvider({ children }: Props) {
 }
 
 export function useRegistrations() {
-  return useContext(RegistrationContext);
+  const context = useContext(RegistrationContext);
+  if (!context) {
+    throw new Error(
+      "useRegistrations should be used with RegistrationsProvider"
+    );
+  }
+  return context;
 }
