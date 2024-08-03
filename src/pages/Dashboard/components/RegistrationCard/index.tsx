@@ -1,5 +1,4 @@
-import { useId, useState } from "react";
-import { Dialog } from "@reach/dialog";
+import { useId } from "react";
 import { ButtonSmall } from "~/components/Buttons";
 import * as S from "./styles";
 import {
@@ -9,10 +8,10 @@ import {
   HiOutlineTrash,
 } from "react-icons/hi";
 import { useRegistrations } from "~/store/registration";
-import { ActionType } from "~/store/actionTypes";
-import { createPortal } from "react-dom";
 import { Employee } from "~/types";
 import { updateEmployee } from "~/store/actionCreators";
+import { useConfirmationDialog } from "~/hooks/useConfirmationDialog";
+import { Dialog } from "~/components/Dialog";
 
 type Props = {
   data: Employee;
@@ -21,21 +20,10 @@ type Props = {
 const RegistrationCard = (props: Props) => {
   const cardId = useId();
   const { dispatch } = useRegistrations();
-  const [nextAction, setNextAction] = useState<string>("");
+  const { isOpen, openDialog, closeDialog, confirm } = useConfirmationDialog();
 
-  const close = () => {
-    setNextAction("");
-    dispatch({ type: ActionType.SET_STATUS, status: "idle" });
-  };
-
-  const confirm = (status: string) => {
-    updateEmployee(dispatch, props.data, status).then(() => setNextAction(""));
-  };
-
-  function update(status: string) {
-    setNextAction(status);
-    dispatch({ type: ActionType.SET_STATUS, status: "confiming" });
-  }
+  const handleClick = (status: string) => () =>
+    openDialog(() => updateEmployee(dispatch, props.data, status));
 
   return (
     <S.Card aria-labelledby={cardId}>
@@ -55,13 +43,13 @@ const RegistrationCard = (props: Props) => {
         {props.data.status === "REVIEW" && (
           <>
             <ButtonSmall
-              onClick={() => update("repprove")}
+              onClick={handleClick("repprove")}
               bgcolor="rgb(255, 145, 154)"
             >
               Reprovar
             </ButtonSmall>
             <ButtonSmall
-              onClick={() => update("approve")}
+              onClick={handleClick("approve")}
               bgcolor="rgb(155, 229, 155)"
             >
               Aprovar
@@ -69,28 +57,21 @@ const RegistrationCard = (props: Props) => {
           </>
         )}
         {props.data.status !== "REVIEW" && (
-          <ButtonSmall onClick={() => update("review")} bgcolor="#ff8858">
+          <ButtonSmall onClick={handleClick("review")} bgcolor="#ff8858">
             Revisar novamente
           </ButtonSmall>
         )}
 
-        <S.ButtonDelete aria-label="Apagar" onClick={() => update("delete")}>
+        <S.ButtonDelete aria-label="Apagar" onClick={handleClick("delete")}>
           <HiOutlineTrash />
         </S.ButtonDelete>
       </S.Actions>
-      {nextAction &&
-        createPortal(
-          <Dialog>
-            <button type="button" onClick={close}>
-              Cancelar
-            </button>
-            {nextAction}
-            <button type="button" onClick={() => confirm(nextAction)}>
-              Confirmar
-            </button>
-          </Dialog>,
-          document.body
-        )}
+      <Dialog
+        isOpen={isOpen}
+        onClose={closeDialog}
+        onConfirm={confirm}
+        message="Certeza?"
+      />
     </S.Card>
   );
 };
