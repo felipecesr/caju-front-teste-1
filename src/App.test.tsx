@@ -51,6 +51,7 @@ test("refatch data", async () => {
   );
 
   await user.click(screen.getByRole("button", { name: /recarregar/i }));
+  await user.click(screen.getByRole("button", { name: /confirmar/i }));
 
   expect(api.getEmployees).toHaveBeenCalledTimes(2);
 });
