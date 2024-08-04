@@ -127,7 +127,6 @@ test("fails to delete a registration", async () => {
   await user.click(screen.getByRole("button", { name: /confirmar/i }));
   screen.getByText(/erro/i);
   await user.click(screen.getByRole("button", { name: /fechar/i }));
-  screen.debug();
 
   expect(
     screen.getByRole("heading", { name: /luiz filho/i })
