@@ -17,12 +17,18 @@ export const getEmployees = (dispatch: Dispatch<Action>, cpf = "") => {
 };
 
 export const createEmployee = (dispatch: Dispatch<Action>, data: Employee) => {
-  return api.createEmployee(data).then((res) => {
-    dispatch({
-      type: ActionType.ADD_REGISTRATION,
-      registration: res,
+  return api
+    .createEmployee(data)
+    .then((res) => {
+      dispatch({
+        type: ActionType.ADD_REGISTRATION,
+        registration: res,
+      });
+      dispatch({ type: ActionType.SET_STATUS, status: "success" });
+    })
+    .catch(() => {
+      dispatch({ type: ActionType.SET_STATUS, status: "failure" });
     });
-  });
 };
 
 export const updateEmployee = (
@@ -51,11 +57,16 @@ export const updateEmployee = (
   };
 
   const payload = { ...data, status: mapping[action] };
-  return api.updateEmployee(payload).then((res) => {
-    dispatch({
-      type: ActionType.UPDATE_REGISTRATION,
-      registration: res,
+  return api
+    .updateEmployee(payload)
+    .then((res) => {
+      dispatch({
+        type: ActionType.UPDATE_REGISTRATION,
+        registration: res,
+      });
+      dispatch({ type: ActionType.SET_STATUS, status: "success" });
+    })
+    .catch(() => {
+      dispatch({ type: ActionType.SET_STATUS, status: "failure" });
     });
-    dispatch({ type: ActionType.SET_STATUS, status: "success" });
-  });
 };
