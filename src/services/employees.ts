@@ -16,6 +16,5 @@ export const updateEmployee = async (data: Employee): Promise<Employee> => {
   return response.data;
 };
 
-export const deleteEmployee = async (id: string) => {
-  await api.delete(`/registrations/${id}`);
-};
+export const deleteEmployee = (id: string) =>
+  api.delete(`/registrations/${id}`);

@@ -1,4 +1,5 @@
 import { createContext, useContext, useState } from "react";
+import { ConfirmDialog } from "~/components/ConfirmDialog";
 
 type Props = {
   children: React.ReactNode;
@@ -35,6 +36,7 @@ export function ConfirmationProvider({ children }: Props) {
     <ConfirmationContext.Provider
       value={{ isOpen, openDialog, closeDialog, confirm }}
     >
+      <ConfirmDialog />
       {children}
     </ConfirmationContext.Provider>
   );

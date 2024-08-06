@@ -1,19 +1,17 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { cpfIsValid } from "cpf-is-valid";
 import Collumns from "./components/Columns";
 import { SearchBar } from "./components/Searchbar";
-import { Spinner } from "~/components/Spinner";
 import * as S from "./styles";
-import { useRegistrations } from "~/store/registration";
-import { getEmployees } from "~/store/actionCreators";
+import { useAllEmployees } from "~/store/employees";
 
 const DashboardPage = () => {
   const [query, setQuery] = useState<string>("");
-  const { state, dispatch } = useRegistrations();
+  const employees = useAllEmployees();
 
-  useEffect(() => {
-    getEmployees(dispatch, query);
-  }, [dispatch, query]);
+  // useEffect(() => {
+  //   getEmployees(dispatch, query);
+  // }, [dispatch, query]);
 
   const filterByCPF = (cpf: string) => {
     if (!cpfIsValid(cpf) && query !== "") {
@@ -29,11 +27,7 @@ const DashboardPage = () => {
   return (
     <S.Container>
       <SearchBar filterByCPF={filterByCPF} />
-      {state.status === "loading" ? (
-        <Spinner />
-      ) : (
-        <Collumns registrations={state.employees} />
-      )}
+      <Collumns registrations={employees} />
     </S.Container>
   );
 };

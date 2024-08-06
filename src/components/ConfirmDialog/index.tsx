@@ -1,5 +1,4 @@
 import { Dialog as ReachDialog } from "@reach/dialog";
-import { createPortal } from "react-dom";
 import { useConfirmation } from "~/store/confirmation";
 import Button from "../Buttons";
 import * as S from "./styles";
@@ -7,7 +6,7 @@ import * as S from "./styles";
 export const ConfirmDialog = () => {
   const { isOpen, closeDialog, confirm } = useConfirmation();
 
-  return createPortal(
+  return (
     <ReachDialog isOpen={isOpen}>
       <S.Wrapper>
         <p>Tem certeza que deseja executar esta ação?</p>
@@ -25,7 +24,6 @@ export const ConfirmDialog = () => {
           </Button>
         </S.Buttons>
       </S.Wrapper>
-    </ReachDialog>,
-    document.body
+    </ReachDialog>
   );
 };

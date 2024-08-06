@@ -1,7 +1,4 @@
-import { createPortal } from "react-dom";
 import { Dialog } from "@reach/dialog";
-import { useRegistrations } from "~/store/registration";
-import { ActionType } from "~/store/actionTypes";
 import * as S from "./styles";
 import { ButtonSmall } from "../Buttons";
 import { FaRegCircleCheck, FaRegCircleXmark } from "react-icons/fa6";
@@ -9,16 +6,13 @@ import { FaRegCircleCheck, FaRegCircleXmark } from "react-icons/fa6";
 type Props = {
   isOpen: boolean;
   type: string;
+  closeDialog: () => void;
 };
 
-export const FeedbackDialog = ({ isOpen, type }: Props) => {
-  const { dispatch } = useRegistrations();
-  const closeDialog = () =>
-    dispatch({ type: ActionType.SET_STATUS, status: "idle" });
-
+export const FeedbackDialog = ({ isOpen, type, closeDialog }: Props) => {
   const isSuccess = type === "success";
 
-  return createPortal(
+  return (
     <Dialog isOpen={isOpen}>
       <S.Header>
         <ButtonSmall type="button" onClick={closeDialog}>
@@ -38,7 +32,6 @@ export const FeedbackDialog = ({ isOpen, type }: Props) => {
           </>
         )}
       </S.Wrapper>
-    </Dialog>,
-    document.body
+    </Dialog>
   );
 };

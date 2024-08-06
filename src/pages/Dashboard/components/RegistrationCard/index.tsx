@@ -7,10 +7,9 @@ import {
   HiOutlineCalendar,
   HiOutlineTrash,
 } from "react-icons/hi";
-import { useRegistrations } from "~/store/registration";
 import { Employee } from "~/types";
-import { updateEmployee } from "~/store/actionCreators";
 import { useConfirmation } from "~/store/confirmation";
+import { useEmployee } from "~/store/employees";
 
 type Props = {
   data: Employee;
@@ -18,12 +17,9 @@ type Props = {
 
 const RegistrationCard = (props: Props) => {
   const cardId = useId();
-  const { dispatch } = useRegistrations();
   const { openDialog } = useConfirmation();
-
-  const handleClick = (status: string) => () => {
-    openDialog(() => updateEmployee(dispatch, props.data, status));
-  };
+  const { approveEmployee, reproveEmployee, reviewEmployee, removeEmployee } =
+    useEmployee(props.data.id);
 
   return (
     <S.Card aria-labelledby={cardId}>
@@ -43,13 +39,13 @@ const RegistrationCard = (props: Props) => {
         {props.data.status === "REVIEW" && (
           <>
             <ButtonSmall
-              onClick={handleClick("repprove")}
+              onClick={() => openDialog(reproveEmployee)}
               bgcolor="rgb(255, 145, 154)"
             >
               Reprovar
             </ButtonSmall>
             <ButtonSmall
-              onClick={handleClick("approve")}
+              onClick={() => openDialog(approveEmployee)}
               bgcolor="rgb(155, 229, 155)"
             >
               Aprovar
@@ -57,12 +53,18 @@ const RegistrationCard = (props: Props) => {
           </>
         )}
         {props.data.status !== "REVIEW" && (
-          <ButtonSmall onClick={handleClick("review")} bgcolor="#ff8858">
+          <ButtonSmall
+            onClick={() => openDialog(reviewEmployee)}
+            bgcolor="#ff8858"
+          >
             Revisar novamente
           </ButtonSmall>
         )}
 
-        <S.ButtonDelete aria-label="Apagar" onClick={handleClick("delete")}>
+        <S.ButtonDelete
+          aria-label="Apagar"
+          onClick={() => openDialog(removeEmployee)}
+        >
           <HiOutlineTrash />
         </S.ButtonDelete>
       </S.Actions>

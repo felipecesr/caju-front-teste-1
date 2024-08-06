@@ -15,15 +15,14 @@ import * as S from "./styles";
 import Button from "~/components/Buttons";
 import { IconButton } from "~/components/Buttons/IconButton";
 import routes from "~/router/routes";
-import { useRegistrations } from "~/store/registration";
 import { Employee } from "~/types";
-import { createEmployee } from "~/store/actionCreators";
 import { useConfirmation } from "~/store/confirmation";
+import { useAddEmployee } from "~/store/employees/useAddEmployee";
 
 const NewUserPage = () => {
   const history = useHistory();
   const { openDialog } = useConfirmation();
-  const { dispatch } = useRegistrations();
+  const addEmployee = useAddEmployee();
   const {
     register,
     formState: { errors },
@@ -50,7 +49,7 @@ const NewUserPage = () => {
       status: "REVIEW",
     };
 
-    openDialog(() => createEmployee(dispatch, payload).then(() => goToHome()));
+    openDialog(() => addEmployee(payload).then(() => goToHome()));
   };
 
   const buildErrorProp = (
