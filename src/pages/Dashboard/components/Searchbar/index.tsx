@@ -6,8 +6,6 @@ import Button from "~/components/Buttons";
 import { IconButton } from "~/components/Buttons/IconButton";
 import TextField from "~/components/TextField";
 import routes from "~/router/routes";
-import { useRegistrations } from "~/store/registration";
-import { getEmployees } from "~/store/actionCreators";
 import { useConfirmation } from "~/store/confirmation";
 import * as S from "./styles";
 
@@ -18,10 +16,7 @@ type Props = {
 export const SearchBar = (props: Props) => {
   const history = useHistory();
   const [cpf, setCpf] = useState<string>("");
-  const { dispatch } = useRegistrations();
   const { openDialog } = useConfirmation();
-
-  const handleClick = () => openDialog(() => getEmployees(dispatch));
 
   const goToNewAdmissionPage = () => {
     history.push(routes.newUser);
@@ -39,7 +34,10 @@ export const SearchBar = (props: Props) => {
         }}
       />
       <S.Actions>
-        <IconButton aria-label="recarregar" onClick={handleClick}>
+        <IconButton
+          aria-label="recarregar"
+          onClick={() => openDialog(console.log)}
+        >
           <HiRefresh />
         </IconButton>
         <Button onClick={() => goToNewAdmissionPage()}>Nova Admissão</Button>

@@ -22,7 +22,7 @@ const RegistrationCard = (props: Props) => {
     useEmployee(props.data.id);
 
   return (
-    <S.Card aria-labelledby={cardId}>
+    <S.Card aria-labelledby={cardId} data-id={props.data.id} data-testid="key">
       <S.IconAndText>
         <HiOutlineUser />
         <h3 id={cardId}>{props.data.employeeName}</h3>

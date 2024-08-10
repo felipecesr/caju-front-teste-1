@@ -1,15 +1,15 @@
-import { Registration } from "~/types";
 import * as S from "./styles";
 import RegistrationCard from "../RegistrationCard";
+import { Employee, Status } from "~/types";
 
 const allColumns = [
-  { status: "REVIEW", title: "Pronto para revisar" },
-  { status: "APPROVED", title: "Aprovado" },
-  { status: "REPROVED", title: "Reprovado" },
+  { status: Status.REVIEW, title: "Pronto para revisar" },
+  { status: Status.APPROVED, title: "Aprovado" },
+  { status: Status.REPROVED, title: "Reprovado" },
 ];
 
 type Props = {
-  registrations?: Registration[];
+  registrations?: Employee[];
 };
 
 const Collumns = (props: Props) => {

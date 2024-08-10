@@ -15,7 +15,7 @@ import * as S from "./styles";
 import Button from "~/components/Buttons";
 import { IconButton } from "~/components/Buttons/IconButton";
 import routes from "~/router/routes";
-import { Employee } from "~/types";
+import { Employee, Status } from "~/types";
 import { useConfirmation } from "~/store/confirmation";
 import { useAddEmployee } from "~/store/employees/useAddEmployee";
 
@@ -46,7 +46,7 @@ const NewUserPage = () => {
       ...data,
       cpf: data.cpf.replace(/[.-]/g, ""),
       id: getRandomInteger(0, 100),
-      status: "REVIEW",
+      status: Status.REVIEW,
     };
 
     openDialog(() => addEmployee(payload).then(() => goToHome()));
